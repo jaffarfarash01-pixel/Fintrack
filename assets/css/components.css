@@ -1,0 +1,185 @@
+/* ── SUMMARY CARDS ───────────────────────────────────────── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.06;
+}
+
+.card-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+.card-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.card-value.green { color: var(--green); }
+.card-value.red   { color: var(--red); }
+.card-value.yellow { color: var(--accent3); }
+
+/* ── TABLE ───────────────────────────────────────────────── */
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+table { width: 100%; border-collapse: collapse; }
+th {
+  background: var(--surface);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  padding: 12px 16px;
+  text-align: left;
+}
+td { padding: 12px 16px; border-top: 1px solid var(--border); font-size: 0.9rem; }
+tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+/* ── BADGES ──────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.badge.food          { background: rgba(255,217,61,0.15);  color: var(--accent3); }
+.badge.transport     { background: rgba(127,255,212,0.12); color: var(--accent); }
+.badge.entertainment { background: rgba(168,85,247,0.15);  color: #c084fc; }
+.badge.education     { background: rgba(96,165,250,0.15);  color: #93c5fd; }
+.badge.health        { background: rgba(74,222,128,0.15);  color: var(--green); }
+.badge.other         { background: rgba(156,163,175,0.15); color: #9ca3af; }
+.badge.income        { background: rgba(74,222,128,0.15);  color: var(--green); }
+.badge.expense       { background: rgba(248,113,113,0.15); color: var(--red); }
+
+/* ── FORMS ───────────────────────────────────────────────── */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+label { font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+
+input, select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border 0.2s;
+}
+input:focus, select:focus { border-color: var(--accent); }
+select option { background: var(--surface); }
+
+/* ── BUTTONS ─────────────────────────────────────────────── */
+.btn {
+  background: var(--accent);
+  color: #0d0f14;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 22px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+  align-self: flex-end;
+}
+.btn:hover { opacity: 0.85; }
+.btn.danger  { background: var(--red); color: #fff; }
+.btn.outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn.outline:hover { border-color: var(--accent); color: var(--accent); }
+
+.delete-btn {
+  background: none; border: none; color: var(--muted);
+  cursor: pointer; font-size: 1rem; padding: 2px 6px; border-radius: 4px;
+}
+.delete-btn:hover { color: var(--red); }
+
+/* ── PROGRESS BARS ───────────────────────────────────────── */
+.budget-item { margin-bottom: 18px; }
+.budget-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.budget-label { font-size: 0.9rem; }
+.budget-amounts { font-size: 0.8rem; color: var(--muted); }
+.progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+.fill-green  { background: linear-gradient(90deg, var(--green), #22d3ee); }
+.fill-yellow { background: linear-gradient(90deg, var(--accent3), #fb923c); }
+.fill-red    { background: linear-gradient(90deg, var(--red), #f43f5e); }
+
+/* ── GOAL CARDS ──────────────────────────────────────────── */
+.goal-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.goal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.goal-name { font-family: 'Syne', sans-serif; font-weight: 700; }
+.goal-pct  { font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+
+/* ── TIP CARDS ───────────────────────────────────────────── */
+.tip-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 14px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.tip-icon  { font-size: 1.6rem; flex-shrink: 0; }
+.tip-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+.tip-text  { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+/* ── CHART CONTAINER ─────────────────────────────────────── */
+.chart-container {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.donut-wrap { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+canvas#donutChart { max-width: 220px; }
+.legend { flex: 1; }
+.legend-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 0.88rem; }
+.legend-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── ALERTS ──────────────────────────────────────────────── */
+.alert { border-radius: 10px; padding: 12px 16px; margin-bottom: 14px; font-size: 0.88rem; }
+.alert.warn    { background: rgba(255,217,61,0.1);  border: 1px solid rgba(255,217,61,0.25);  color: var(--accent3); }
+.alert.success { background: rgba(74,222,128,0.1);  border: 1px solid rgba(74,222,128,0.25);  color: var(--green); }
+.alert.info    { background: rgba(127,255,212,0.08); border: 1px solid rgba(127,255,212,0.2); color: var(--accent); }
