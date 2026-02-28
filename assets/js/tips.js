@@ -29,20 +29,11 @@ const TIPS_DATA = [
     title: 'Follow the 50/30/20 Rule',
     text: 'Allocate 50% of income to needs, 30% to wants, and save at least 20% of your monthly allowance or stipend.',
   },
-  {
-    icon: '📈',
-    title: 'Start a Student SIP',
-    text: 'Even ₹500/month in a mutual fund SIP builds compounding wealth. Starting at 20 vs 30 can double your final corpus.',
-  },
+  
   {
     icon: '🛒',
     title: 'Shop With a List',
     text: 'Always make a shopping list before visiting a store or website. Impulse buying is the silent killer of student budgets.',
-  },
-  {
-    icon: '💡',
-    title: 'Track Every Expense',
-    text: 'Research shows people who track daily spending save 20–30% more. Even small purchases add up over a month.',
   },
   {
     icon: '🏷️',
