@@ -672,6 +672,14 @@
     const loginActive = document.getElementById('loginSection').style.display !== 'none';
     if (loginActive) handleLogin(); else handleSignup();
   });
+  // chatgpt
+  document.querySelector("form").addEventListener("submit", function(e) {
+    e.preventDefault(); // prevent page reload
+    
+    // You can add validation here later
+    
+    window.location.href = "index.html";
+});
 </script>
 </body>
 </html>
