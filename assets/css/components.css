@@ -183,3 +183,24 @@ canvas#donutChart { max-width: 220px; }
 .alert.warn    { background: rgba(255,217,61,0.1);  border: 1px solid rgba(255,217,61,0.25);  color: var(--accent3); }
 .alert.success { background: rgba(74,222,128,0.1);  border: 1px solid rgba(74,222,128,0.25);  color: var(--green); }
 .alert.info    { background: rgba(127,255,212,0.08); border: 1px solid rgba(127,255,212,0.2); color: var(--accent); }
+ /* TIPS BTN */
+#tips {
+  position: relative;
+}
+#Tips-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  background: #00e5a0;
+  color: #060810;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#Tips-btn:hover {
+  opacity: 0.8;
+}
