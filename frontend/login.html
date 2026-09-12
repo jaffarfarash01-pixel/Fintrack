@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinTrack — Student Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080a0f;
+      --surface: #0f1117;
+      --card: #141820;
+      --border: #1e2433;
+      --accent: #00e5a0;
+      --accent-dim: rgba(0,229,160,0.1);
+      --accent-glow: rgba(0,229,160,0.22);
+      --text: #eef0f6;
+      --muted: #5a6380;
+      --muted2: #8892aa;
+      --red: #ff5e5e;
+      --green: #4ade80;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { min-height: 100vh; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    /* ── LEFT PANEL ── */
+    .left-panel {
+      width: 48%;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* animated background grid */
+    .left-panel::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,160,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,160,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridDrift 20s linear infinite;
+    }
+    @keyframes gridDrift {
+      0%   { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+
+    /* glow orb */
+    .left-panel::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,229,160,0.1) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .panel-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.5rem;
+      color: var(--accent); letter-spacing: -0.5px;
+      position: relative; z-index: 1;
+    }
+    .panel-logo span { color: var(--text); }
+
+    .panel-content {
+      position: relative; z-index: 1;
+    }
+    .panel-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent-dim); border: 1px solid rgba(0,229,160,0.18);
+      color: var(--accent); padding: 5px 14px; border-radius: 30px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 28px;
+    }
+    .panel-tag::before { content: '●'; font-size: 0.45rem; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .panel-heading {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 2.4rem;
+      line-height: 1.08; letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .panel-heading em { font-style: normal; color: var(--accent); }
+
+    .panel-desc {
+      font-size: 0.92rem; color: var(--muted2);
+      line-height: 1.65; max-width: 340px; margin-bottom: 44px;
+    }
+
+    /* feature pills */
+    .feature-list { display: flex; flex-direction: column; gap: 14px; }
+    .feature-item {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.88rem; color: var(--muted2);
+    }
+    .feature-check {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: var(--accent-dim); border: 1px solid rgba(0,229,160,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; flex-shrink: 0; color: var(--accent);
+    }
+
+    .panel-footer {
+      position: relative; z-index: 1;
+      font-size: 0.78rem; color: var(--muted);
+    }
+
+    /* ── RIGHT PANEL ── */
+    .right-panel {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+      position: relative;
+      overflow-y: auto;
+    }
+
+    .right-panel::before {
+      content: '';
+      position: absolute; top: -120px; right: -120px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,229,160,0.06), transparent 65%);
+      pointer-events: none;
+    }
+
+    /* ── FORM CARD ── */
+    .form-card {
+      width: 100%; max-width: 420px;
+      animation: slideIn 0.55s ease both;
+    }
+    @keyframes slideIn {
+      from { opacity:0; transform: translateY(24px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* tab toggle */
+    .tab-toggle {
+      display: flex;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 32px;
+    }
+    .tab-btn {
+      flex: 1; padding: 10px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 0.88rem;
+      background: none; border: none;
+      color: var(--muted); cursor: pointer;
+      border-radius: 9px;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #060810;
+    }
+
+    .form-heading {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.55rem;
+      letter-spacing: -0.02em; margin-bottom: 6px;
+    }
+    .form-sub {
+      font-size: 0.85rem; color: var(--muted2); margin-bottom: 28px;
+    }
+
+    /* forms */
+    .auth-form { display: none; flex-direction: column; gap: 16px; }
+    .auth-form.active { display: flex; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 0.78rem; color: var(--muted2); font-weight: 500; letter-spacing: 0.02em; }
+
+    .input-wrap { position: relative; }
+    .input-wrap .input-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      font-size: 0.95rem; pointer-events: none;
+    }
+    .input-wrap input {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px 12px 40px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-wrap input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,229,160,0.1);
+    }
+    .input-wrap input.error { border-color: var(--red); }
+    .input-wrap input.success { border-color: var(--green); }
+
+    /* password toggle */
+    .pw-toggle {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--muted); cursor: pointer;
+      font-size: 0.85rem; padding: 2px;
+    }
+
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .error-msg { font-size: 0.75rem; color: var(--red); display: none; }
+    .error-msg.show { display: block; }
+
+    /* forgot password */
+    .forgot {
+      text-align: right; font-size: 0.78rem;
+      color: var(--accent); text-decoration: none;
+      margin-top: -8px;
+    }
+    .forgot:hover { opacity: 0.8; }
+
+    /* submit */
+    .submit-btn {
+      width: 100%;
+      background: var(--accent); color: #060810;
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 0.95rem; padding: 14px;
+      border: none; border-radius: 10px; cursor: pointer;
+      box-shadow: 0 0 28px var(--accent-glow);
+      transition: all 0.25s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 4px;
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 0 44px var(--accent-glow); }
+    .submit-btn:active { transform: translateY(0); }
+    .submit-btn.loading { opacity: 0.7; pointer-events: none; }
+
+    /* spinner */
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(6,8,16,0.3);
+      border-top-color: #060810;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    .submit-btn.loading .spinner { display: block; }
+    .submit-btn.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.75rem; color: var(--muted); margin: 4px 0;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* social login */
+    .social-btn {
+      width: 100%; padding: 12px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--muted2);
+      font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+      font-weight: 500; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: all 0.2s;
+    }
+    .social-btn:hover { border-color: rgba(0,229,160,0.25); color: var(--text); }
+
+    /* college ID badge */
+    .college-badge {
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,229,160,0.18);
+      border-radius: 10px; padding: 12px 16px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.82rem; color: var(--muted2);
+    }
+    .college-badge strong { color: var(--accent); }
+
+    /* success screen */
+    .success-screen {
+      display: none;
+      flex-direction: column; align-items: center; text-align: center;
+      gap: 16px; padding: 20px 0;
+    }
+    .success-screen.show { display: flex; }
+    .success-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .success-title { font-family:'Syne',sans-serif; font-weight:800; font-size:1.3rem; }
+    .success-sub   { font-size:0.85rem; color:var(--muted2); }
+    .success-cta {
+      background: var(--accent); color: #060810;
+      font-family:'Syne',sans-serif; font-weight:700;
+      padding:12px 32px; border-radius:10px; text-decoration:none;
+      font-size:0.9rem; transition:opacity 0.2s; margin-top:8px;
+      display: inline-block;
+    }
+    .success-cta:hover { opacity:0.85; }
+
+    /* strength bar */
+    .strength-wrap { display: none; flex-direction: column; gap: 4px; }
+    .strength-wrap.show { display: flex; }
+    .strength-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .strength-fill { height: 100%; border-radius: 2px; transition: width 0.3s, background 0.3s; width: 0%; }
+    .strength-label { font-size: 0.72rem; color: var(--muted2); }
+
+    /* terms */
+    .terms-check { display: flex; align-items: flex-start; gap: 10px; font-size: 0.8rem; color: var(--muted2); }
+    .terms-check input[type=checkbox] { margin-top:2px; accent-color: var(--accent); flex-shrink:0; }
+    .terms-check a { color: var(--accent); text-decoration: none; }
+
+    /* ── RESPONSIVE DESIGN UPDATES ── */
+    @media (max-width: 1100px) {
+      .left-panel { width: 42%; padding: 40px 36px; }
+      .right-panel { padding: 40px 32px; }
+      .panel-heading { font-size: 2rem; }
+      .panel-desc { font-size: 0.88rem; }
+      .feature-item { font-size: 0.82rem; }
+    }
+
+    @media (max-width: 850px) {
+      body {
+        flex-direction: column;
+        overflow-y: auto;
+      }
+      .left-panel {
+        width: 100%;
+        padding: 32px 24px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .panel-heading {
+        font-size: 1.85rem;
+        margin-bottom: 12px;
+      }
+      .panel-desc {
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+      .feature-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .panel-footer { margin-top: 24px; }
+      .right-panel {
+        width: 100%;
+        padding: 40px 24px;
+        align-items: flex-start;
+      }
+      .form-card { max-width: 480px; margin: 0 auto; }
+    }
+
+    @media (max-width: 600px) {
+      .left-panel { padding: 24px 20px; }
+      .feature-list { grid-template-columns: 1fr; }
+      .field-row { grid-template-columns: 1fr; }
+      .right-panel { padding: 28px 16px 40px; }
+      .form-card { width: 100%; }
+      .input-wrap input { font-size: 0.95rem; } /* Prevents iOS auto-zoom */
+    }
+  </style>
+</head>
+<body>
+
+<div class="left-panel">
+  <div class="panel-logo">Fin<span>Track</span></div>
+
+  <div class="panel-content">
+    <div class="panel-tag">Student Finance Tracker</div>
+    <h1 class="panel-heading">Your money,<br><em>your rules.</em></h1>
+    <p class="panel-desc">Join thousands of students managing expenses, budgets, and goals smarter — one rupee at a time.</p>
+
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="feature-check">💸</div>
+        <span>Track every expense instantly</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">📋</div>
+        <span>Set smart category budgets</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">🎯</div>
+        <span>Create and hit savings goals</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">📊</div>
+        <span>Visualize spending patterns</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">💡</div>
+        <span>Get student-specific money tips</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    © 2026 FinTrack · Built for Problem Statement 5
+  </div>
+</div>
+
+<div class="right-panel">
+  <div class="form-card">
+
+    <div class="tab-toggle">
+      <button class="tab-btn active" onclick="switchTab('login', this)">Login</button>
+      <button class="tab-btn" onclick="switchTab('signup', this)">Sign Up</button>
+    </div>
+
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">🎉</div>
+      <div class="success-title" id="successTitle">Welcome back!</div>
+      <div class="success-sub" id="successSub">Redirecting you to your dashboard...</div>
+      <a href="index.html" class="success-cta">Go to Dashboard →</a>
+    </div>
+
+    <div id="loginSection">
+      <div class="form-heading">Welcome back 👋</div>
+      <div class="form-sub">Login to your FinTrack account</div>
+
+      <div class="auth-form active" id="loginForm">
+        <div class="field">
+          <label>College Email</label>
+          <div class="input-wrap">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="email" placeholder="you@college.edu" autocomplete="email">
+          </div>
+          <span class="error-msg" id="loginEmailErr">Please enter a valid email.</span>
+        </div>
+
+        <div class="field">
+          <label>Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password">
+           <button class="pw-toggle" onclick="togglePw('loginPassword', this)" type="button">👁</button>
+          </div>
+          <span class="error-msg" id="loginPassErr">Password is required.</span>
+        </div>
+
+        <a href="#" class="forgot">Forgot password?</a>
+
+        <button class="submit-btn" id="loginBtn" onclick="handleLogin()">
+          <span class="btn-text">Login to FinTrack →</span>
+          <div class="spinner"></div>
+        </button>
+
+        <div class="divider">or continue with</div>
+
+        <button class="social-btn" onclick="handleSocialLogin()">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.7 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.6-8 19.6-20 0-1.3-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 35.6 26.8 36 24 36c-5.2 0-9.6-2.9-11.3-7l-6.6 5.1C9.8 39.8 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.8 2.2-2.3 4.1-4.2 5.4l6.2 5.2C41 35.4 44 30.1 44 24c0-1.3-.1-2.7-.4-4z"/></svg>
+          Continue with Google
+        </button>
+      </div>
+    </div>
+
+    <div id="signupSection" style="display:none">
+      <div class="form-heading">Create account ✨</div>
+      <div class="form-sub">Join FinTrack — it's completely free</div>
+
+      <div class="auth-form active" id="signupForm">
+        <div class="field-row">
+          <div class="field">
+            <label>First Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input type="text" id="signupFirst" placeholder="Rahul">
+            </div>
+            <span class="error-msg" id="signupFirstErr">Required.</span>
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input type="text" id="signupLast" placeholder="Sharma">
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>College Email</label>
+          <div class="input-wrap">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="signupEmail" placeholder="you@college.edu">
+          </div>
+          <span class="error-msg" id="signupEmailErr">Enter a valid college email.</span>
+        </div>
+
+        <div class="field">
+          <label>College / Institution</label>
+          <div class="input-wrap">
+            <span class="input-icon">🎓</span>
+            <input type="text" id="signupCollege" placeholder="e.g. MIT Pune, VIT Vellore">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="signupPassword" placeholder="Create a strong password"
+              oninput="checkStrength(this.value)">
+            <button class="pw-toggle" onclick="togglePw('signupPassword', this)" type="button">👁</button>
+          </div>
+          <span class="error-msg" id="signupPassErr">Minimum 8 characters required.</span>
+          <div class="strength-wrap" id="strengthWrap">
+            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+            <div class="strength-label" id="strengthLabel">Password strength</div>
+          </div>
+        </div>
+
+        <div class="college-badge">
+          <span>🎓</span>
+          <div>Using a <strong>.edu</strong> or college email unlocks <strong>student verification badge</strong></div>
+        </div>
+
+        <div class="terms-check">
+          <input type="checkbox" id="termsCheck">
+          <label for="termsCheck">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+        </div>
+        <span class="error-msg" id="termsErr">Please accept the terms to continue.</span>
+
+        <button class="submit-btn" id="signupBtn" onclick="handleSignup()">
+          <span class="btn-text">Create My Account →</span>
+          <div class="spinner"></div>
+        </button>
+
+        <div class="divider">or sign up with</div>
+
+        <button class="social-btn" onclick="handleSocialLogin()">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.7 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.6-8 19.6-20 0-1.3-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 35.6 26.8 36 24 36c-5.2 0-9.6-2.9-11.3-7l-6.6 5.1C9.8 39.8 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.8 2.2-2.3 4.1-4.2 5.4l6.2 5.2C41 35.4 44 30.1 44 24c0-1.3-.1-2.7-.4-4z"/></svg>
+          Continue with Google
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+function switchTab(tab, button) {
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    document.getElementById("loginSection").style.display =
+        tab === "login" ? "block" : "none";
+
+    document.getElementById("signupSection").style.display =
+        tab === "signup" ? "block" : "none";
+}
+
+
+// ===============================
+// PASSWORD STRENGTH
+// ===============================
+
+function checkStrength(password) {
+
+    const fill = document.getElementById("strengthFill");
+    const label = document.getElementById("strengthLabel");
+
+    if (!fill || !label) return;
+
+    let score = 0;
+
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    if (password.length === 0) {
+
+        fill.style.width = "0%";
+        label.textContent = "Password strength";
+
+    } else if (score <= 2) {
+
+        fill.style.width = "35%";
+        label.textContent = "Weak";
+
+    } else if (score === 3 || score === 4) {
+
+        fill.style.width = "70%";
+        label.textContent = "Medium";
+
+    } else {
+
+        fill.style.width = "100%";
+        label.textContent = "Strong";
+    }
+}
+
+
+// ===============================
+// SIGNUP
+// ===============================
+
+async function handleSignup() {
+
+    const firstName =
+        document.getElementById("signupFirst").value.trim();
+
+    const lastName =
+        document.getElementById("signupLast").value.trim();
+
+    const email =
+        document.getElementById("signupEmail").value.trim();
+
+    const password =
+        document.getElementById("signupPassword").value.trim();
+
+    const terms =
+        document.getElementById("termsCheck").checked;
+
+
+    // Validation
+
+    if (!firstName) {
+
+        alert("Please enter your first name.");
+        return;
+    }
+
+    if (!email) {
+
+        alert("Please enter your email.");
+        return;
+    }
+
+    if (!password || password.length < 8) {
+
+        alert("Password must contain at least 8 characters.");
+        return;
+    }
+
+    if (!terms) {
+
+        alert("Please accept the Terms of Service.");
+        return;
+    }
+
+
+    const name = `${firstName} ${lastName}`.trim();
+
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:3000/api/auth/register",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password
+                })
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        if (response.ok) {
+
+            alert("Registration Successful!");
+
+            // Switch to login tab
+            const loginButton =
+                document.querySelector(".tab-btn");
+
+            if (loginButton) {
+                switchTab("login", loginButton);
+            }
+
+            // Put email into login field
+            const loginEmail =
+                document.getElementById("email");
+
+            if (loginEmail) {
+                loginEmail.value = email;
+            }
+
+        } else {
+
+            alert(data.message || "Registration failed.");
+
+        }
+
+    } catch (error) {
+
+        console.error("Signup Error:", error);
+
+        alert(
+            "Cannot connect to backend. Make sure your Node server is running."
+        );
+    }
+}
+
+
+// ===============================
+// LOGIN
+// ===============================
+
+async function handleLogin() {
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("loginPassword").value.trim();
+
+
+    if (!email || !password) {
+
+        alert("Please enter email and password.");
+        return;
+    }
+
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:3000/api/auth/login", 
+            { 
+                method: "POST", 
+ 
+                headers: { 
+                    "Content-Type": "application/json" 
+                }, 
+ 
+                body: JSON.stringify({ 
+                    email: email, 
+                    password: password 
+                }) 
+            } 
+        ); 
+ 
+ 
+        const data = await response.json(); 
+ 
+ 
+        if (response.ok) { 
+ 
+            localStorage.setItem( 
+                "user", 
+                JSON.stringify(data.user) 
+            ); 
+ 
+            alert("Login Successful!"); 
+ 
+            window.location.href = "index.html"; 
+ 
+        } else { 
+ 
+            alert(data.message || "Login failed."); 
+ 
+        } 
+ 
+    } catch (error) { 
+ 
+        console.error("Login Error:", error); 
+ 
+        alert( 
+            "Cannot connect to backend. Make sure your Node server is running." 
+        ); 
+    } 
+} 
+ 
+ 
+// =============================== 
+// SOCIAL LOGIN 
+// =============================== 
+ 
+function handleSocialLogin() { 
+ 
+    alert("Google login will be added later."); 
+ 
+} 
+function togglePw(inputId, btn) { 
+    const input = document.getElementById(inputId); 
+ 
+    if (!input) { 
+        console.error("Password input not found:", inputId); 
+        return; 
+    } 
+ 
+    if (input.type === "password") { 
+        input.type = "text"; 
+        btn.textContent = "🙈"; 
+    } else { 
+        input.type = "password"; 
+        btn.textContent = "👁"; 
+    } 
+} 
+ 
+</script> 
+</body> 
+</html>
