@@ -24,7 +24,7 @@ async function loadGoals() {
 
   try {
     const response = await fetch(
-      `http://localhost:3000/api/goals?userId=${user.id}`
+      `https://fintrack-production-4d9b.up.railway.app/api/goals?userId=${user.id}`
     );
 
     const data = await response.json();
@@ -77,7 +77,7 @@ async function addGoal() {
   try {
 
     const response = await fetch(
-      "http://localhost:3000/api/goals",
+      "https://fintrack-production-4d9b.up.railway.app/api/goals",
       {
         method: "POST",
 

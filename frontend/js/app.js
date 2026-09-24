@@ -147,7 +147,7 @@ async function loadTransactions() {
     try {
 
         const response = await fetch(
-            `http://localhost:3000/api/transactions?userId=${user.id}`
+            `https://fintrack-production-4d9b.up.railway.app/api/transactions?userId=${user.id}`
         );
 
         const data = await response.json();
