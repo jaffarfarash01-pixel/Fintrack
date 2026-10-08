@@ -204,3 +204,49 @@ canvas#donutChart { max-width: 220px; }
 #Tips-btn:hover {
   opacity: 0.8;
 }
+/* ===============================
+   TRANSACTION ACTION BUTTONS
+   =============================== */
+
+.action-btn {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 6px;
+}
+
+/* Edit */
+.action-btn.edit {
+    background: rgba(0, 229, 160, 0.12);
+    color: #00e5a0;
+    border: 1px solid rgba(0, 229, 160, 0.25);
+}
+
+.action-btn.edit:hover {
+    background: #00e5a0;
+    color: #080a0f;
+    transform: translateY(-1px);
+}
+
+/* Delete */
+.action-btn.delete {
+    background: rgba(255, 94, 94, 0.10);
+    color: #ff5e5e;
+    border: 1px solid rgba(255, 94, 94, 0.25);
+}
+
+.action-btn.delete:hover {
+    background: #ff5e5e;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Click effect */
+.action-btn:active {
+    transform: translateY(0);
+}
