@@ -35,14 +35,23 @@ function showWelcomeMessage() {
 
 document.addEventListener("DOMContentLoaded", showWelcomeMessage);
 
+function getLoggedInUser() {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user || !user.id) {
+        return null;
+    }
+
+    return user;
+}
+
 // ===============================
 // LOGOUT
 // ===============================
 
 function logout() {
     localStorage.removeItem("user");
-
-    window.location.href = "login.html";
+    window.location.replace("login.html");
 }
 
 /* ── MASTER RENDER ──────────────────────────────────────── */

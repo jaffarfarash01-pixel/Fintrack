@@ -3,17 +3,6 @@
  * User-specific budgets using backend API
  */
 
-function getLoggedInUser() {
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  if (!user || !user.id) {
-    alert("Please login first.");
-    return null;
-  }
-
-  return user;
-}
-
 
 // ADD / UPDATE BUDGET
 async function setBudget() {
