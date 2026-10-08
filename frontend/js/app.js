@@ -13,6 +13,38 @@ function showPage(id, el) {
   renderAll();
 }
 
+// ===============================
+// LOGGED-IN USER
+// ===============================
+
+const loggedInUser = JSON.parse(localStorage.getItem("user"));
+
+if (!loggedInUser) {
+    window.location.href = "login.html";
+}
+
+function showWelcomeMessage() {
+    const welcomeTitle = document.getElementById("welcomeTitle");
+
+    if (welcomeTitle && loggedInUser) {
+        const name = loggedInUser.name || "User";
+
+        welcomeTitle.textContent = `Welcome  ${name} 👋`;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", showWelcomeMessage);
+
+// ===============================
+// LOGOUT
+// ===============================
+
+function logout() {
+    localStorage.removeItem("user");
+
+    window.location.href = "login.html";
+}
+
 /* ── MASTER RENDER ──────────────────────────────────────── */
 async function renderAll() {
 
