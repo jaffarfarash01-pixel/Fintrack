@@ -227,12 +227,7 @@
     .error-msg { font-size: 0.75rem; color: var(--red); display: none; }
     .error-msg.show { display: block; }
 
-    /* forgot password */
-    .forgot {
-      text-align: right; font-size: 0.78rem;
-      color: var(--accent); text-decoration: none;
-      margin-top: -8px;
-    }
+
     .forgot:hover { opacity: 0.8; }
 
     /* submit */
@@ -462,7 +457,6 @@
           <span class="error-msg" id="loginPassErr">Password is required.</span>
         </div>
 
-        <a href="#" class="forgot">Forgot password?</a>
 
         <button class="submit-btn" id="loginBtn" onclick="handleLogin()">
           <span class="btn-text">Login to FinTrack →</span>
