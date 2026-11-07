@@ -38,6 +38,15 @@ app.get("/", (req, res) => {
   res.send("FinTrack Backend Running 🚀");
 });
 
+app.get("/health", async (req, res) => {
+  try {
+    await sequelize.query("SELECT 1");
+    res.status(200).json({ status: "ok" });
+  } catch (err) {
+    res.status(500).json({ status: "db error" });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
