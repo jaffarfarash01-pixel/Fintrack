@@ -22,7 +22,7 @@ async function setBudget() {
 
   try {
     const response = await fetch(
-      "https://fintrack-production-4d9b.up.railway.app/api/budgets",
+      "https://fintrack-dwyj.onrender.com/api/budgets",
       {
         method: "POST",
         headers: {
@@ -64,7 +64,7 @@ async function loadBudgets() {
 
   try {
     const response = await fetch(
-      `https://fintrack-production-4d9b.up.railway.app/api/budgets?userId=${user.id}`
+      `https://fintrack-dwyj.onrender.com/api/budgets?userId=${user.id}`
     );
 
     const data = await response.json();

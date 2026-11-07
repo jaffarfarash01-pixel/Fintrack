@@ -188,7 +188,7 @@ async function loadTransactions() {
     try {
 
         const response = await fetch(
-            `https://fintrack-production-4d9b.up.railway.app/api/transactions?userId=${user.id}`
+            `https://fintrack-dwyj.onrender.com/api/transactions?userId=${user.id}`
         );
 
         const data = await response.json();

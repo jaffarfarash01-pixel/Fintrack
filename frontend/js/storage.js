@@ -12,7 +12,7 @@ const KEYS = {
 
 function loadTransactions() {
   // return JSON.parse(localStorage.getItem(KEYS.TRANSACTIONS) || '[]');
-  fetch("https://fintrack-production-4d9b.up.railway.app/api/transactions")
+  fetch("https://fintrack-dwyj.onrender.com/api/transactions")
 }
 function saveTransactions(data) {
   localStorage.setItem(KEYS.TRANSACTIONS, JSON.stringify(data));

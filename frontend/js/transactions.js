@@ -35,7 +35,7 @@ async function addTransaction() {
 
   try {
     const response = await fetch(
-      "https://fintrack-production-4d9b.up.railway.app/api/transactions",
+      "https://fintrack-dwyj.onrender.com/api/transactions",
       {
         method: "POST",
         headers: {
@@ -82,7 +82,7 @@ async function renderExpenses() {
   }
 
   const response = await fetch(
-    `https://fintrack-production-4d9b.up.railway.app/api/transactions?userId=${user.id}`
+    `https://fintrack-dwyj.onrender.com/api/transactions?userId=${user.id}`
   );
 
   const transactions = await response.json();
@@ -131,7 +131,7 @@ async function deleteTransaction(id) {
 
   try {
     const response = await fetch(
-      `https://fintrack-production-4d9b.up.railway.app/api/transactions/${id}`,
+      `https://fintrack-dwyj.onrender.com/api/transactions/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -185,7 +185,7 @@ async function editTransaction(id) {
   try {
 
     const response = await fetch(
-      `https://fintrack-production-4d9b.up.railway.app/api/transactions/${id}`,
+      `https://fintrack-dwyj.onrender.com/api/transactions/${id}`,
       {
         method: "PUT",
         headers: {
@@ -235,7 +235,7 @@ async function getTotals() {
   }
 
   const response = await fetch(
-    `https://fintrack-production-4d9b.up.railway.app/api/transactions?userId=${user.id}`
+    `https://fintrack-dwyj.onrender.com/api/transactions?userId=${user.id}`
   );
 
   const transactions = await response.json();
@@ -282,7 +282,7 @@ async function thisMonthSpending() {
     try {
 
         const response = await fetch(
-            `https://fintrack-production-4d9b.up.railway.app/api/transactions?userId=${user.id}`
+            `https://fintrack-dwyj.onrender.com/api/transactions?userId=${user.id}`
         );
 
         const transactions = await response.json();
